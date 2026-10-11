@@ -1,0 +1,512 @@
+<!DOCTYPE html><html lang="fr"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Évaluer par compétences — dix affirmations à vérifier</title>
+<style>
+:root{--bleu:#1f4e79;--clair:#f4f7fb;--vert:#2e7d32;--ambre:#b26a00;--rouge:#c62828;--gris:#555}
+*{box-sizing:border-box}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:#222;background:#fff;line-height:1.5}
+header{background:var(--bleu);color:#fff;padding:1rem 1.2rem}
+header h1{margin:0;font-size:1.3rem;font-weight:normal}
+header p{margin:.2rem 0 0;font-size:.9rem;opacity:.85}
+nav{display:flex;flex-wrap:wrap;gap:.4rem;background:var(--clair);padding:.6rem 1.2rem;border-bottom:1px solid #d0d8e4;position:sticky;top:0;z-index:5}
+nav button{font:inherit;background:#fff;border:1px solid #c5cfdc;border-radius:4px;padding:.4rem .8rem;cursor:pointer}
+nav button.actif{background:var(--bleu);color:#fff;border-color:var(--bleu)}
+main{max-width:920px;margin:0 auto;padding:1.2rem}
+section.ecran{display:none}section.ecran.actif{display:block}
+h2{color:var(--bleu);font-size:1.25rem;border-bottom:2px solid var(--bleu);padding-bottom:.3rem;margin-top:1.6rem}
+h3{font-size:1.05rem;margin:.2rem 0 .4rem}
+.carte{border:1px solid #d0d8e4;border-radius:6px;padding:1rem 1.1rem;margin:1rem 0;background:#fff}
+.num{display:inline-block;background:var(--bleu);color:#fff;border-radius:50%;min-width:1.7rem;height:1.7rem;text-align:center;line-height:1.7rem;font-size:.9rem;margin-right:.5rem;font-family:sans-serif}
+.moment{font-size:.92rem;color:var(--gris);margin:.4rem 0 .7rem;font-style:italic}
+.choix{display:flex;flex-wrap:wrap;gap:1.4rem;align-items:flex-start}
+.choix fieldset{border:none;padding:0;margin:0;display:flex;gap:.5rem;flex-wrap:wrap}
+.choix legend{font-size:.85rem;color:var(--gris);padding:0;margin-bottom:.3rem;font-family:sans-serif}
+.choix label{border:1px solid #c5cfdc;border-radius:20px;padding:.25rem .75rem;cursor:pointer;font-size:.95rem;user-select:none}
+.choix input{margin-right:.3rem}
+.choix label:has(input:checked){background:var(--bleu);color:#fff;border-color:var(--bleu)}
+.carte.incomplet{border-color:var(--rouge);background:#fff6f6}
+.statut{display:inline-block;padding:.15rem .6rem;border-radius:4px;color:#fff;font-size:.85rem;font-family:sans-serif;vertical-align:middle}
+.etabli{background:var(--vert)}.nuancer{background:var(--ambre)}.fragile{background:var(--rouge)}
+.rappel{background:var(--clair);border-left:4px solid var(--bleu);padding:.5rem .8rem;margin:.6rem 0;font-size:.95rem}
+.retour,.blaise{margin-top:.8rem;padding:.6rem .8rem;border-radius:4px}
+.retour{background:#fdf6e3;border-left:4px solid var(--ambre)}
+.blaise{background:#eef7ee;border-left:4px solid var(--vert)}
+.question{font-style:italic;color:var(--gris);margin:.3rem 0 .6rem}
+button.principal{font:inherit;background:var(--bleu);color:#fff;border:none;border-radius:4px;padding:.6rem 1.2rem;cursor:pointer;font-size:1rem}
+button.secondaire{font:inherit;background:#fff;color:var(--bleu);border:1px solid var(--bleu);border-radius:4px;padding:.45rem 1rem;cursor:pointer}
+input[type=text],input[type=date],input[type=password],textarea{font:inherit;padding:.4rem .6rem;border:1px solid #c5cfdc;border-radius:4px;width:100%;max-width:100%}
+textarea{min-height:4.5rem;resize:vertical}
+table{border-collapse:collapse;width:100%;margin:.8rem 0;font-size:.95rem}
+th,td{border:1px solid #d0d8e4;padding:.45rem .6rem;vertical-align:top;text-align:left}
+th{background:var(--clair);font-family:sans-serif;font-weight:600;font-size:.85rem}
+td.c,th.c{text-align:center}
+.barre{display:flex;height:14px;border-radius:3px;overflow:hidden;background:#eee;margin-top:.3rem}
+.barre span{display:block;height:100%}
+.vrai{background:#3b7dd8}.faux{background:#d85b3b}.nuan{background:#e0a800}
+.legende{font-size:.8rem;font-family:sans-serif;color:var(--gris);display:flex;gap:1rem;margin:.4rem 0}
+.legende i{display:inline-block;width:12px;height:12px;margin-right:.3rem;vertical-align:middle;border-radius:2px}
+.kpi{display:flex;gap:1rem;flex-wrap:wrap;margin:1rem 0}
+.kpi div{background:var(--clair);border-radius:6px;padding:.8rem 1.2rem;min-width:160px}
+.kpi b{display:block;font-size:1.8rem;color:var(--bleu);font-family:sans-serif}
+.info{font-size:.9rem;color:var(--gris)}
+.alerte{background:#fff6f6;border:1px solid var(--rouge);color:var(--rouge);padding:.6rem .8rem;border-radius:4px;margin:.8rem 0}
+.ok{background:#eef7ee;border:1px solid var(--vert);padding:.8rem 1rem;border-radius:4px;margin:.8rem 0}
+.ligne{display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end;margin:.8rem 0}
+.ligne>div{flex:1;min-width:200px}
+ul.puces{margin:.3rem 0 .3rem 1.2rem}
+@media print{nav,header,button,.noprint{display:none!important}main{max-width:none;padding:0}.carte{break-inside:avoid}section.ecran{display:none}section.ecran.actif{display:block}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Évaluer par compétences — dix affirmations à vérifier</h1>
+  <p>Journée de formation · Positionnement individuel, vérification en situation, rétroaction auto-évaluative</p>
+</header>
+<nav class="noprint">
+  <button data-ecran="accueil" class="actif">Accueil</button>
+  <button data-ecran="positionnement">A. Positionnement</button>
+  <button data-ecran="retroaction">B. Rétroaction auto-évaluative</button>
+  <button data-ecran="formateur">Formateur</button>
+</nav>
+
+<main>
+<!-- ================= ACCUEIL ================= -->
+<section id="accueil" class="ecran actif">
+  <h2>PRINCIPE D’USAGE</h2>
+  <p>Chaque enseignant est invité à se positionner individuellement (vrai / faux / à nuancer), et ajoute un indice de confiance (1 = je devine, 2 = je crois savoir, 3 = j'en suis sûr).</p>
+  <p>Il ne s’auto-évalue pas tout de suite : chaque affirmation est reliée à un moment de la journée où elle peut être éprouvée sur des copies, des grilles ou des scénarios réels. Le corrigé commenté est remis à 15 h 45, à lire seul si on le souhaite.</p>
+  <p>Trois statuts sont utilisés dans le corrigé :</p>
+  <ul class="puces">
+    <li><span class="statut etabli">Établi</span> : résultat robuste, répliqué, méta-analyses convergentes.</li>
+    <li><span class="statut nuancer">À nuancer</span> : vrai dans certaines conditions, souvent sur-simplifié.</li>
+    <li><span class="statut fragile">Fragile</span> : une étude célèbre, des réplications décevantes ou contestées.</li>
+  </ul>
+
+  <div class="carte noprint">
+    <h3>Avant de commencer</h3>
+    <div class="ligne">
+      <div><label>Date de la session<br><input type="date" id="dateSession"></label></div>
+      <div><label>Votre code participant (anonyme, généré automatiquement)<br><input type="text" id="codeParticipant" readonly=""></label></div>
+    </div>
+    <p class="info">Aucun nom n’est demandé. Le code sert uniquement à retrouver votre positionnement au moment de la rétroaction et à compter les participants. La partie B (rétroaction) est consultable librement à tout moment.</p>
+    <button class="principal" onclick="aller('positionnement')">Commencer le positionnement →</button>
+    <button class="secondaire" onclick="aller('retroaction')">Aller directement à la rétroaction</button>
+  </div>
+
+  <h2>DIX AFFIRMATIONS à vérifier</h2>
+  <ol id="listeAffirmations"></ol>
+
+  <h2>DES MOMENTS de la FORMATION où l’affirmation peut être vérifiée ou pas</h2>
+  <table>
+    <thead><tr><th style="width:55%">Affirmation à vérifier</th><th>Où l'éprouver dans la journée de formation</th></tr></thead>
+    <tbody id="tableMoments"></tbody>
+  </table>
+</section>
+
+<!-- ================= A. POSITIONNEMENT ================= -->
+<section id="positionnement" class="ecran">
+  <h2>A. POSITIONNEMENT</h2>
+  <p>Pour chaque affirmation : <strong>vrai / faux / à nuancer</strong>, puis votre indice de confiance (<strong>1</strong> = je devine, <strong>2</strong> = je crois savoir, <strong>3</strong> = j'en suis sûr). Ne vous auto-évaluez pas encore : chaque affirmation sera éprouvée au cours de la journée.</p>
+  <div id="formPositionnement"></div>
+  <div id="erreurPositionnement"></div>
+  <div class="noprint">
+    <button class="principal" id="btnEnregistrer" onclick="enregistrerPositionnement()">Enregistrer mon positionnement</button>
+  </div>
+  <div id="confirmation"></div>
+</section>
+
+<!-- ================= B. RÉTROACTION ================= -->
+<section id="retroaction" class="ecran">
+  <h2>B. RÉTROACTION D’AUTO-ÉVALUATION</h2>
+  <div id="contenuRetro"></div>
+</section>
+
+<!-- ================= FORMATEUR ================= -->
+<section id="formateur" class="ecran">
+  <h2>Espace formateur</h2>
+  <div id="contenuFormateur"></div>
+</section>
+</main>
+
+<script>
+/* =========================================================
+   CONFIGURATION (à adapter par le formateur)
+   ========================================================= */
+const CONFIG = {
+  ENDPOINT: "",            // URL du Web App Google Apps Script (facultatif). Vide = données locales uniquement.
+  PIN_FORMATEUR: "1545"    // PIN d'accès à l'espace formateur (statistiques)
+};
+
+/* =========================================================
+   CONTENU — dix affirmations et moments de la journée
+   ========================================================= */
+const AFFIRMATIONS = [
+ {n:1, texte:"Un commentaire sans note fait progresser davantage qu'une note + commentaire.",
+  moment:"Boucle formative : que lit l'élève en premier sur nos restitutions ?"},
+ {n:2, texte:"Le feedback sur la personne est inefficace ; celui sur le processus et l'autorégulation est le plus puissant.",
+  moment:"Réécriture d'un feedback réel apporté par l'équipe"},
+ {n:3, texte:"Une grille à 12 critères surcharge la mémoire de travail de l'élève autant que celle du correcteur.",
+  moment:"Combien de critères notre grille demande-t-elle de tenir en tête pendant la tâche ?"},
+ {n:4, texte:"Une évaluation formative est en elle-même un moment d'apprentissage : se rappeler fait mieux retenir que relire.",
+  moment:"La boucle prévoit-elle un rappel actif ou seulement une relecture de la correction ?"},
+ {n:5, texte:"Un élève qui réussit juste après la correction a acquis la compétence.",
+  moment:"Règle de positionnement : dernière performance, tendance, observations espacées ?"},
+ {n:6, texte:"Les élèves savent spontanément s'auto-évaluer ; il suffit de leur donner la grille.",
+  moment:"Test du scénario d'auto-positionnement : l'élève doit-il montrer une trace ?"},
+ {n:7, texte:"Laisser un élève se tromper avant de lui donner la réponse nuit à son apprentissage.",
+  moment:"Analyse de copies : quelles erreurs sont « productives » et lesquelles sont à prévenir ?"},
+ {n:8, texte:"Dire à un élève « tu es intelligent » le motive et le fait progresser (feedback immédiat).",
+  moment:"Relecture des appréciations : parle-t-on de la personne ou du travail ?"},
+ {n:9, texte:"L'évaluation formative est l'une des interventions pédagogiques les plus efficaces (et l’évaluation entre pairs ?)",
+  tableTexte:"L'évaluation formative est l'une des interventions pédagogiques les plus efficaces (effet 0,4 à 0,7).",
+  moment:"Engagement charte : qu'est-ce qui, concrètement, produirait l'effet ?"},
+ {n:10, texte:"Donner la grille critériée avant la tâche améliore la performance et réduit l'anxiété.",
+  moment:"Simulation élève : la grille seule suffit-elle à comprendre l'attendu ?"}
+];
+const POSITIONS = [["vrai","Vrai"],["faux","Faux"],["nuancer","À nuancer"]];
+const CONFIANCES = [["1","1 — je devine"],["2","2 — je crois savoir"],["3","3 — j'en suis sûr"]];
+
+/* =========================================================
+   CONTENU — rétroaction d'auto-évaluation (corrigé commenté)
+   ========================================================= */
+const RETRO = [
+{n:1, titre:"Commentaire sans note > note + commentaire", statut:"à nuancer (dans le sens de l'affirmation)", cls:"nuancer",
+ question:"Commentaire seul ou note et commentaire ?",
+ contenu:`<p><strong>Ce que dit la recherche :</strong> Ruth Butler (1988), avec des élèves de 11-12 ans, observe que le groupe « commentaires seuls » progresse et garde son intérêt, tandis que les groupes « notes » et « notes + commentaires » stagnent : la note absorbe l'attention et le commentaire n'est plus lu. La méta-analyse de Koenka et al. (2021) confirme que les commentaires l'emportent sur les notes pour la motivation et la performance ; en revanche, l'écart entre « commentaire seul » et « note + commentaire » y est moins net que dans Butler.</p>
+<p>Pour un collège sans notes depuis dix ans, la vraie question se déplace : un niveau de maîtrise coloré ou chiffré peut jouer exactement le rôle de la note et éclipser le commentaire. L'affirmation se vérifie donc sur vos propres restitutions.</p>
+<p><strong>Ce que ça change :</strong> séparer dans le temps le positionnement et le retour qualitatif ; ou faire travailler le commentaire avant de dévoiler le niveau.</p>
+<p><strong>Pour approfondir :</strong> Butler, R. (1988), <em>British Journal of Educational Psychology</em>, 58 ; Koenka, A. C. et al. (2021), <em>Educational Psychology</em>, 41(7).</p>`,
+ retour:"Si vous avez approuvé sans réserve, conservez l’idée, mais ajoutez ses conditions : quel commentaire, quelle tâche, quel effet recherché ?",
+ blaise:"Sans notes depuis dix ans, nos élèves regardent-ils surtout la couleur ou le niveau, ou utilisent-ils réellement le commentaire ?"},
+
+{n:2, titre:"Feedback personne / processus / autorégulation", statut:"établi, avec une précision", cls:"etabli",
+ question:"Personne, tâche, processus ou autorégulation ?",
+ contenu:`<p>Hattie & Timperley (2007) distinguent quatre niveaux : tâche, processus, autorégulation, personne. Le niveau « personne » (« bravo, tu es doué ») est le moins efficace ; processus et autorégulation portent le transfert. Précision souvent oubliée : le feedback sur la tâche reste indispensable pour les débutants sur une notion — il devient insuffisant quand l'élève maîtrise déjà les bases. Et Kluger & DeNisi (1996) rappellent qu'un tiers des feedbacks étudiés dégradent la performance : donner du feedback n'est pas en soi une bonne pratique.</p>
+<p><strong>Ce que ça change :</strong> une restitution utile contient au moins un élément de processus (« comment tu as fait ») et une piste d'autorégulation (« comment vérifier la prochaine fois »).</p>
+<p><strong>Pour approfondir :</strong> Hattie & Timperley (2007), <em>Review of Educational Research</em>, 77(1) ; Kluger & DeNisi (1996), <em>Psychological Bulletin</em>, 119(2) ; Shute (2008), <em>Review of Educational Research</em>, 78(1) pour une synthèse très lisible.</p>`,
+ retour:"Avez-vous distingué « encourager l’élève » et « lui donner une information utilisable pour apprendre » ?",
+ blaise:"Transformer « Tu es très rigoureux. » en : « Tu as vérifié tes unités à chaque étape. Réutilise cette vérification dans le prochain problème. »"},
+
+{n:3, titre:"Grille à 12 critères et mémoire de travail", statut:"à nuancer", cls:"nuancer",
+ question:"Une grille à douze critères surcharge-t-elle nécessairement ?",
+ contenu:`<p>La mémoire de travail traite environ 4 éléments nouveaux simultanément (Cowan, 2001), et la théorie de la charge cognitive (Sweller) montre que l'excès d'informations à gérer nuit à l'apprentissage. Mais une grille posée sur la table est un support externe qui décharge la mémoire ; elle ne surcharge que si l'élève doit en tenir compte mentalement en cours de production, ou si tous les critères pèsent également. Le problème n'est donc pas le nombre de lignes du référentiel, mais le nombre de critères activés dans une même tâche.</p>
+<p><strong>Ce que ça change :</strong> un référentiel complet pour l'établissement, mais 2 à 4 critères « vivants » par tâche, annoncés et travaillés.</p>
+<p><strong>Pour approfondir :</strong> Cowan, N. (2001), <em>Behavioral and Brain Sciences</em>, 24 ; Sweller, J. (2011), « Cognitive load theory », <em>Psychology of Learning and Motivation</em>, 55 ; en français : CSEN, <em>Boîte à idées</em> (2023), fiche sur la charge cognitive.</p>`,
+ retour:"Si vous avez approuvé, vous avez peut-être identifié une difficulté réelle de lisibilité. En revanche, cette difficulté ne peut pas être déduite du seul nombre de critères.",
+ blaise:`Sur une grille existante, repérer :<br>a. les critères que l’élève doit mobiliser simultanément ;<br>b. ceux qu’il peut vérifier successivement ;<br>c. ceux qui pourraient être travaillés à un autre moment.<br>Observer ensuite son utilisation, plutôt qu’imposer un nombre « idéal ».`},
+
+{n:4, titre:"L'évaluation formative comme moment d'apprentissage (effet test)", statut:"établi", cls:"etabli",
+ question:"Évaluer peut-il contribuer à apprendre ?",
+ contenu:`<p>Roediger & Karpicke (2006) : les élèves qui s'auto-testent retiennent nettement mieux une semaine plus tard que ceux qui relisent, alors même qu'ils se sentent moins sûrs d'eux. La méta-analyse d'Adesope et al. (2017) confirme un effet important et stable. Se rappeler activement transforme la mémoire ; relire ou écouter la correction, beaucoup moins.</p>
+<p><strong>Ce que ça change :</strong> une évaluation formative n'est pas seulement un relevé de position ; un quiz court non noté ou un rappel libre en début de séance est un outil d'apprentissage. Cela légitime aussi d'évaluer souvent et légèrement plutôt que rarement et lourdement.</p>
+<p><strong>Pour approfondir :</strong> Roediger & Karpicke (2006), <em>Psychological Science</em>, 17(3) ; Adesope et al. (2017), <em>Review of Educational Research</em>, 87(3) ; Dehaene, S. (2018), <em>Apprendre !</em>, Odile Jacob (pilier « retour d'information » et « consolidation »).</p>`,
+ retour:"Distinguez-vous les moments où vous recueillez une information pour positionner l’élève et ceux où vous lui faites retrouver ses connaissances pour apprendre ?",
+ blaise:"Prévoir trois questions de rappel sans enjeu de bulletin, puis une correction. Réinterroger quelques jours plus tard."},
+
+{n:5, titre:"Réussir juste après la correction = compétence acquise", statut:"faux (établi)", cls:"etabli",
+ question:"Réussir immédiatement signifie-t-il avoir appris durablement ?",
+ contenu:`<p>Soderstrom & Bjork (2015) distinguent performance (ce qu'on observe sur le moment) et apprentissage (ce qui reste et se transfère) ; les deux sont souvent découplés, et une réussite immédiate après aide est un très mauvais prédicteur de maîtrise durable. L'effet d'espacement (Cepeda et al., 2006) montre que la rétention dépend d'observations répétées et espacées.</p>
+<p><strong>Ce que ça change :</strong> une règle de positionnement collective qui ne retient ni « la dernière performance » automatiquement, ni la « moyenne », mais une tendance sur plusieurs observations espacées, et qui distingue « non observé » de « non maîtrisé ».</p>
+<p><strong>Pour approfondir :</strong> Soderstrom & Bjork (2015), <em>Perspectives on Psychological Science</em>, 10(2) ; Cepeda et al. (2006), <em>Psychological Bulletin</em>, 132(3).</p>`,
+ retour:"Quelles traces utilisez-vous pour distinguer « il vient de réussir » et « il peut réussir à nouveau après un délai » ?",
+ blaise:"Compléter une reprise réussie par une nouvelle occasion de mobilisation, plus tard et avec moins d’aide. Ne pas considérer la copie corrigée comme l’unique preuve de maîtrise."},
+
+{n:6, titre:"Les élèves savent spontanément s'auto-évaluer", statut:"faux, mais ça s'apprend (établi)", cls:"etabli",
+ question:"À quelles conditions l’auto-évaluation devient-elle formative ?",
+ contenu:`<p>Les élèves les plus fragiles surestiment nettement leur niveau (Kruger & Dunning, 1999), et une grille seule ne suffit pas. En revanche, la méta-analyse de Panadero, Jonsson & Botella (2017) montre que l'auto-évaluation entraînée — critères explicités, exemples commentés, justification par une trace — améliore l'autorégulation et le sentiment d'efficacité. Andrade (2019) insiste : ce qui compte n'est pas l'exactitude de l'auto-notation, mais l'usage que l'élève en fait pour réviser. La revue de Heidi Andrade distingue notamment l’auto-attribution d’un résultat et l’auto-évaluation formative destinée à améliorer le travail. Elle souligne l’intérêt de critères explicites et de possibilités de révision. Demander seulement « quelle couleur te donnes-tu ? » ne représente donc qu’une forme très limitée d’auto-évaluation.</p>
+<p><strong>Ce que ça change :</strong> passer de « je pense avoir réussi : oui/non » à « je montre le passage qui justifie mon positionnement et je dis ce que je vérifie ». C'est le cœur de la routine d'auto-évaluation construite cet après-midi.</p>
+<p><strong>Pour approfondir :</strong> Panadero, Jonsson & Botella (2017), <em>Educational Research Review</em>, 22 ; Andrade, H. (2019), <em>Frontiers in Education</em>, 4 ; Kruger & Dunning (1999), <em>Journal of Personality and Social Psychology</em>, 77(6).</p>`,
+ retour:"Mes élèves justifient-ils leur positionnement par une trace ? Peuvent-ils agir ensuite ?",
+ blaise:`Proposer trois amorces :<ul class="puces"><li>« Je pense avoir réussi ce critère parce que… »</li><li>« La preuve se trouve ici… »</li><li>« Pour améliorer mon travail, je vais… »</li></ul>`},
+
+{n:7, titre:"Laisser l'élève se tromper nuit à l'apprentissage", statut:"faux, sous conditions, pas par elle-même (à nuancer)", cls:"nuancer",
+ question:"L’erreur fait-elle apprendre ?",
+ contenu:`<p>Janet Metcalfe (2017) synthétise : les erreurs commises puis corrigées avec feedback sont mieux retenues que les réponses apprises sans erreur, surtout quand l'élève était confiant dans sa mauvaise réponse (effet d'hypercorrection). Kapur (2008, 2016) montre, avec l'« échec productif », que chercher sans réussir avant l'enseignement améliore la compréhension conceptuelle. Condition essentielle : le retour doit venir, et pas trop tard. Sans retour, l'erreur se consolide.</p>
+<p><strong>Ce que ça change :</strong> le « statut de l'erreur » n'est pas qu'une posture bienveillante, c'est un mécanisme d'apprentissage — à condition que la correction soit un vrai moment de retraitement par l'élève (typologie d'erreurs, reformulation), pas un simple corrigé affiché.</p>
+<p><strong>Pour approfondir :</strong> Metcalfe, J. (2017), « Learning from errors », <em>Annual Review of Psychology</em>, 68 ; Kapur, M. (2016), <em>Educational Psychologist</em>, 51(2) ; en français : Astolfi, J.-P., <em>L'erreur, un outil pour enseigner</em> (ESF).</p>`,
+ retour:"Dans mes corrections, l’élève identifie-t-il pourquoi sa réponse ne convient pas, ou recopie-t-il seulement une réponse juste ?",
+ blaise:`Faire compléter :<ul class="puces"><li>« J’avais pensé que… »</li><li>« Ce qui ne fonctionne pas dans mon raisonnement… »</li><li>« La prochaine fois, je vérifierai… »</li></ul>`},
+
+{n:8, titre:"« Tu es intelligent » motive", statut:"fragile / à nuancer", cls:"fragile",
+ question:"Le feedback doit-il toujours être immédiat ? (non ; le mot “toujours” est injustifié)",
+ contenu:`<p>Mueller & Dweck (1998) : louer l'intelligence rend les enfants plus sensibles à l'échec et les pousse à éviter les tâches difficiles, contrairement au compliment sur l'effort et la stratégie — résultat cohérent avec le niveau « personne » de l'affirmation 2. Mais attention à l'extrapolation : les interventions « état d'esprit de croissance » ont des effets faibles dans les méta-analyses (Sisk et al., 2018) et modestes, concentrés sur les élèves en difficulté, dans la grande étude de Yeager et al. (2019). Ce qui est robuste, c'est d'orienter le retour vers le travail et la stratégie ; ce qui est fragile, c'est l'idée qu'un « discours mindset » change à lui seul les résultats.</p>
+<p><strong>Ce que ça change :</strong> écrire des appréciations sur ce que l'élève a fait et peut faire, pas sur ce qu'il est — sans en attendre de miracle motivationnel.</p>
+<p><strong>Pour approfondir :</strong> Mueller & Dweck (1998), <em>JPSP</em>, 75(1) ; Sisk et al. (2018), <em>Psychological Science</em>, 29(4) ; Yeager et al. (2019), <em>Nature</em>, 573.</p>
+<p>Dans deux expériences sur des questionnaires à choix multiples, Andrew Butler, Karpicke et Roediger (2007) ont observé de meilleurs résultats différés avec un feedback retardé qu’avec un feedback immédiat. Ce résultat ne démontre pas qu’il faudrait toujours attendre : il invalide surtout la règle inverse. <strong>Pour approfondir :</strong> <em>The Effect of Type and Timing of Feedback on Learning From Multiple-Choice Tests</em> (pubmed.ncbi.nlm.nih.gov).</p>`,
+ retour:"Est-ce que je choisis le moment du retour selon son objectif, ou uniquement selon mes habitudes de correction ?",
+ blaise:`Distinguer, dans une prochaine séquence :<ul class="puces"><li>Un retour pour débloquer une difficulté ;</li><li>Un retour après une tentative autonome ;</li><li>Une reprise différée destinée à remobiliser l’apprentissage.</li></ul>`},
+
+{n:9, titre:"Évaluation formative : effet 0,4 à 0,7", statut:"à nuancer fortement", cls:"nuancer",
+ question:"L’évaluation entre pairs peut-elle faire apprendre ?",
+ contenu:`<p>Les chiffres viennent de Black & Wiliam (1998), synthèse fondatrice mais hétérogène. La méta-analyse de Kingston & Nash (2011), plus stricte, trouve un effet médian autour de 0,20, et Bennett (2011) montre que « évaluation formative » désigne des pratiques si diverses que l'étiquette ne garantit rien. L'effet vient de ce qui est fait : feedback exploitable, ajustement réel de l'enseignement, implication de l'élève.</p>
+<p><strong>Ce que ça change :</strong> dans la charte, ne pas écrire « nous pratiquons l'évaluation formative » mais ce qui la rend effective — un temps de reprise après le retour, par exemple.</p>
+<p><strong>Pour approfondir :</strong> Black & Wiliam (1998), <em>Assessment in Education</em>, 5(1) ; Kingston & Nash (2011), <em>Educational Measurement: Issues and Practice</em>, 30(4) ; Bennett (2011), <em>Assessment in Education</em>, 18(1) ; Wiliam, D. (2011), <em>Embedded Formative Assessment</em>.</p>
+<p>Quant à l’évaluation entre pairs, affirmation étayée, avec des résultats variables. La méta-analyse de Double, McGrane et Hopfenbeck (2020), portant sur 54 études, trouve un effet positif moyen, de taille faible à modérée, sur les performances scolaires. Cela soutient l’intérêt pédagogique de l’évaluation entre pairs, sans garantir l’efficacité de tout dispositif ni justifier le remplacement systématique de l’enseignant. <strong>Pour approfondir :</strong> <em>The Impact of Peer Assessment on Academic Performance: A Meta-analysis of Control Group Studies</em>.</p>`,
+ retour:"Dans mon dispositif, qu’est-ce que l’élève apprend en examinant le travail d’un autre ?",
+ blaise:"Faire porter le retour sur un critère précis : « Je repère une réussite et je la justifie. Je pose une question qui peut aider à améliorer le travail. » Le destinataire décide ensuite de la modification à effectuer."},
+
+{n:10, titre:"Grille avant la tâche : meilleure performance, moins d'anxiété", statut:"à nuancer (plutôt vrai), elle constitue un appui, pas une garantie", cls:"nuancer",
+ question:"Commentaire seul ou note et commentaire ?",
+ contenu:`<p>Panadero & Jonsson (2013) : les grilles données en amont améliorent la transparence, réduisent l'anxiété et soutiennent l'autorégulation — surtout quand elles sont accompagnées d'exemples de productions et d'un travail métacognitif. Une grille seule peut aussi être lue comme une liste de cases à cocher et conduire à des productions conformes mais superficielles (Jonsson & Svingby, 2007).</p>
+<p><strong>Ce que ça change :</strong> la grille se « fait vivre » avec des exemplaires commentés ; c'est précisément ce que produit l'atelier de calibrage quand on confronte des copies aux descripteurs.</p>
+<p>La revue de Jonsson et Svingby (2007) montre que les grilles peuvent améliorer la fidélité des évaluations, notamment lorsqu’elles sont accompagnées d’exemples et d’une formation des évaluateurs. Leur seule présence ne garantit ni l’accord entre correcteurs ni la validité du jugement.</p>
+<p><strong>Pour approfondir :</strong> <em>The Use of Scoring Rubrics: Reliability, Validity and Educational Consequences</em>. Panadero & Jonsson (2013), <em>Educational Research Review</em>, 9 ; Jonsson & Svingby (2007), <em>Educational Research Review</em>, 2(2).</p>`,
+ retour:"Avec mes collègues, avons-nous seulement adopté les mêmes mots, ou comparé ce que nous observons réellement dans les productions ?",
+ blaise:`Positionner individuellement trois productions anonymisées, puis comparer :<ul class="puces"><li>le niveau attribué ;</li><li>les indices retenus ;</li><li>les conditions de réalisation ;</li><li>les formulations ambiguës.</li></ul>`}
+];
+
+const ALLER_PLUS_LOIN = `
+<h2>POUR ALLER PLUS LOIN (en français)</h2>
+<ul class="puces">
+<li><strong>Lecture courte, en français :</strong> Rey, O. & Feyfant, A. (2014), <em>Évaluer pour (mieux) faire apprendre</em>, Dossier de veille de l'IFÉ n° 94 — synthèse accessible qui couvre les affirmations 1, 2, 9 et 10.</li>
+<li><strong>Ressources institutionnelles :</strong> Cnesco (2014), conférence de consensus <em>Évaluation en classe au service de l'apprentissage</em> (recommandations du jury) ; CSEN, <em>Boîte à idées</em> (2023) ; EEF, <em>Teacher Feedback to Improve Pupil Learning</em> (2021), poster des six recommandations.</li>
+<li><strong>Un livre :</strong> Dehaene, S. (2018), <em>Apprendre !</em> (affirmations 4, 5, 7) ; Wiliam, D. (2011), <em>Embedded Formative Assessment</em> (affirmations 1, 2, 6, 9).</li>
+<li><strong>Pour l'équipe qui veut creuser une question :</strong> les articles cités affirmation par affirmation ; les méta-analyses (Koenka 2021, Adesope 2017, Panadero 2017, Kingston & Nash 2011, Sisk 2018) sont les meilleurs points d'entrée car elles pèsent les résultats au lieu d'en isoler un.</li>
+</ul>`;
+
+const PERSO = [
+ ["conserve","Une idée que je conserve :"],
+ ["nuance","Une idée que je nuance ou abandonne :"],
+ ["evolue","Ce qui m’a fait évoluer — source, argument ou exemple :"],
+ ["modif","Une modification que je souhaite essayer :"],
+ ["observe","Ce que j’observerai chez les élèves et dans ma charge de travail :"]
+];
+
+/* =========================================================
+   OUTILS
+   ========================================================= */
+const $ = s => document.querySelector(s);
+const libPos = p => ({vrai:"Vrai",faux:"Faux",nuancer:"À nuancer"})[p] || "—";
+const aujourdhui = () => { const d=new Date(); return d.toISOString().slice(0,10); };
+const lire = (k,def) => { try{ return JSON.parse(localStorage.getItem(k)) ?? def; }catch(e){ return def; } };
+const ecrire = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+const genCode = () => Math.random().toString(36).slice(2,8).toUpperCase();
+const echap = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let moi = lire("epc_moi", null);
+if(!moi){ moi = {code:genCode(), date:aujourdhui()}; ecrire("epc_moi", moi); }
+
+function aller(id){
+  document.querySelectorAll("section.ecran").forEach(s=>s.classList.toggle("actif", s.id===id));
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("actif", b.dataset.ecran===id));
+  if(id==="retroaction") rendreRetro();
+  if(id==="formateur") rendreFormateur();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>aller(b.dataset.ecran));
+
+/* =========================================================
+   ACCUEIL
+   ========================================================= */
+$("#dateSession").value = moi.date;
+$("#codeParticipant").value = moi.code;
+$("#dateSession").onchange = e => { moi.date = e.target.value || aujourdhui(); ecrire("epc_moi", moi); };
+$("#listeAffirmations").innerHTML = AFFIRMATIONS.map(a=>`<li>${echap(a.texte)}</li>`).join("");
+$("#tableMoments").innerHTML = AFFIRMATIONS.map(a=>`<tr><td><span class="num">${a.n}</span>${echap(a.tableTexte||a.texte)}</td><td>${echap(a.moment)}</td></tr>`).join("");
+
+/* =========================================================
+   A. POSITIONNEMENT
+   ========================================================= */
+function maReponse(){
+  return lire("epc_reponses", []).find(r => r.code===moi.code) || null;
+}
+function rendrePositionnement(){
+  const deja = maReponse();
+  $("#formPositionnement").innerHTML = AFFIRMATIONS.map(a=>{
+    const r = deja ? deja.reponses.find(x=>x.n===a.n) : null;
+    return `<div class="carte" id="aff${a.n}">
+      <h3><span class="num">${a.n}</span>${echap(a.texte)}</h3>
+      <div class="moment">Où l'éprouver dans la journée : ${echap(a.moment)}</div>
+      <div class="choix">
+        <fieldset><legend>Mon positionnement</legend>
+          ${POSITIONS.map(([v,l])=>`<label><input type="radio" name="pos${a.n}" value="${v}" ${r&&r.pos===v?"checked":""} ${deja?"disabled":""}>${l}</label>`).join("")}
+        </fieldset>
+        <fieldset><legend>Indice de confiance</legend>
+          ${CONFIANCES.map(([v,l])=>`<label><input type="radio" name="conf${a.n}" value="${v}" ${r&&String(r.conf)===v?"checked":""} ${deja?"disabled":""}>${l}</label>`).join("")}
+        </fieldset>
+      </div></div>`;
+  }).join("");
+  if(deja){
+    $("#btnEnregistrer").style.display="none";
+    $("#confirmation").innerHTML = `<div class="ok"><strong>Positionnement enregistré</strong> le ${new Date(deja.horodatage).toLocaleString("fr-FR")} (session du ${deja.date}, code ${deja.code}).<br>
+      Chaque affirmation sera éprouvée au cours de la journée. Le corrigé commenté est consultable à tout moment dans l’onglet « B. Rétroaction auto-évaluative ».
+      <div style="margin-top:.6rem"><button class="principal" onclick="aller('retroaction')">Consulter la rétroaction →</button>
+      <button class="secondaire" onclick="exporterMaReponse()">Télécharger mes réponses (JSON)</button>
+      <button class="secondaire" onclick="recommencer()">Nouveau participant sur cet appareil</button></div></div>`;
+  } else {
+    $("#btnEnregistrer").style.display="";
+    $("#confirmation").innerHTML="";
+  }
+}
+function enregistrerPositionnement(){
+  const reponses=[]; let manque=[];
+  AFFIRMATIONS.forEach(a=>{
+    const p=document.querySelector(`input[name=pos${a.n}]:checked`), c=document.querySelector(`input[name=conf${a.n}]:checked`);
+    document.getElementById("aff"+a.n).classList.toggle("incomplet", !(p&&c));
+    if(!(p&&c)) manque.push(a.n); else reponses.push({n:a.n,pos:p.value,conf:+c.value});
+  });
+  if(manque.length){
+    $("#erreurPositionnement").innerHTML=`<div class="alerte">Positionnement et indice de confiance manquants pour l’affirmation${manque.length>1?"s":""} ${manque.join(", ")}.</div>`;
+    document.getElementById("aff"+manque[0]).scrollIntoView({behavior:"smooth"}); return;
+  }
+  $("#erreurPositionnement").innerHTML="";
+  const enreg={code:moi.code,date:moi.date||aujourdhui(),horodatage:new Date().toISOString(),reponses};
+  const tous=lire("epc_reponses",[]); tous.push(enreg); ecrire("epc_reponses",tous);
+  envoyerDistant(enreg);
+  rendrePositionnement();
+}
+async function envoyerDistant(enreg){
+  if(!CONFIG.ENDPOINT) return;
+  try{ await fetch(CONFIG.ENDPOINT,{method:"POST",body:JSON.stringify(enreg)}); }
+  catch(e){ const att=lire("epc_attente",[]); att.push(enreg); ecrire("epc_attente",att); }
+}
+function exporterMaReponse(){
+  const r=maReponse(); if(!r) return;
+  telecharger(`positionnement_${r.date}_${r.code}.json`, JSON.stringify([r],null,1), "application/json");
+}
+function recommencer(){
+  if(!confirm("Créer un nouveau code participant sur cet appareil ? Les réponses précédentes restent comptabilisées.")) return;
+  moi={code:genCode(),date:aujourdhui()}; ecrire("epc_moi",moi);
+  $("#dateSession").value=moi.date; $("#codeParticipant").value=moi.code;
+  rendrePositionnement(); aller("accueil");
+}
+function telecharger(nom,contenu,type){
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([contenu],{type})); a.download=nom; a.click();
+}
+rendrePositionnement();
+
+/* =========================================================
+   B. RÉTROACTION — accès libre, à tout moment
+   ========================================================= */
+function rendreRetro(){
+  const z=$("#contenuRetro"); const rep=maReponse();
+  let h = rep ? "" : `<div class="rappel">Vous n’avez pas (encore) enregistré de positionnement sur cet appareil : le corrigé est lisible intégralement, mais sans rappel de vos réponses. <button class="secondaire noprint" onclick="aller('positionnement')">Me positionner d’abord</button></div>`;
+  h += `<p class="info">Pour chaque affirmation : votre positionnement, le statut retenu par le corrigé, ce que dit la recherche, ce que cela change, puis deux questions — votre retour personnel et une question à explorer à Saint-Blaise.</p>`;
+  h += RETRO.map(r=>{
+    const a=AFFIRMATIONS.find(x=>x.n===r.n); const mine=rep?rep.reponses.find(x=>x.n===r.n):null;
+    return `<div class="carte">
+      <h3><span class="num">${r.n}</span>${echap(r.titre)} — <span class="statut ${r.cls}">Statut : ${echap(r.statut)}</span></h3>
+      <div class="question">${echap(r.question)}</div>
+      <div class="rappel"><strong>Affirmation :</strong> ${echap(a.texte)}<br>
+        ${mine?`<strong>Votre positionnement :</strong> ${libPos(mine.pos)} — confiance ${mine.conf} (${CONFIANCES[mine.conf-1][1].split("— ")[1]})`:"<em>Pas de positionnement enregistré.</em>"}</div>
+      ${r.contenu}
+      <div class="retour"><strong>Votre retour personnel :</strong> ${r.retour}</div>
+      <div class="blaise"><strong>À Saint-Blaise, question à explorer :</strong> ${r.blaise}</div>
+    </div>`;
+  }).join("");
+  h += ALLER_PLUS_LOIN;
+  const perso=lire("epc_perso_"+moi.code,{});
+  h += `<h2>PERSONNELLEMENT…</h2><div class="carte">` + PERSO.map(([k,l])=>`<p><label><strong>${l}</strong><br><textarea data-perso="${k}">${echap(perso[k]||"")}</textarea></label></p>`).join("") +
+       `<p class="info">Vos réponses sont conservées sur cet appareil uniquement. <button class="secondaire noprint" onclick="window.print()">Imprimer / enregistrer en PDF</button></p></div>`;
+  z.innerHTML=h;
+  z.querySelectorAll("textarea[data-perso]").forEach(t=>t.oninput=()=>{ const p=lire("epc_perso_"+moi.code,{}); p[t.dataset.perso]=t.value; ecrire("epc_perso_"+moi.code,p); });
+}
+
+/* =========================================================
+   FORMATEUR
+   ========================================================= */
+let formateurOuvert=false, donneesDistantes=[], donneesImportees=[];
+function rendreFormateur(){
+  const z=$("#contenuFormateur");
+  if(!formateurOuvert){
+    z.innerHTML=`<div class="carte"><p>Cet espace est réservé au formateur (statistiques de la session).</p>
+      <div class="ligne"><div style="max-width:220px"><input type="password" id="pin" placeholder="PIN formateur"></div>
+      <div style="flex:0"><button class="principal" onclick="ouvrirFormateur()">Entrer</button></div></div><div id="msgPin"></div></div>`;
+    $("#pin").onkeydown=e=>{ if(e.key==="Enter") ouvrirFormateur(); };
+    return;
+  }
+  const dates=[...new Set(toutesDonnees().map(r=>r.date))].sort().reverse();
+  const dateSel = window._dateSel || dates[0] || aujourdhui();
+  z.innerHTML=`<div class="carte noprint">
+    <div class="ligne">
+      <div><label>Date de session<br><select id="selDate" style="font:inherit;padding:.4rem">${dates.map(d=>`<option ${d===dateSel?"selected":""}>${d}</option>`).join("")}${dates.includes(dateSel)?"":`<option selected>${dateSel}</option>`}</select></label></div>
+      <div style="flex:0"><button class="secondaire" onclick="chargerDistant()">Actualiser ${CONFIG.ENDPOINT?"(serveur)":"(local)"}</button></div>
+      <div style="flex:0"><label class="secondaire" style="display:inline-block;cursor:pointer">Importer des fichiers JSON<input type="file" accept=".json" multiple style="display:none" onchange="importerJSON(this.files)"></label></div>
+      <div style="flex:0"><button class="secondaire" onclick="exporterCSV()">Exporter CSV</button></div>
+    </div>
+    <p class="info">Source des données : ${CONFIG.ENDPOINT?"serveur (Google Sheets) + ":""}réponses enregistrées sur cet appareil${donneesImportees.length?" + "+donneesImportees.length+" réponse(s) importée(s)":""}.</p>
+  </div><div id="stats"></div>`;
+  $("#selDate").onchange=e=>{ window._dateSel=e.target.value; rendreFormateur(); };
+  rendreStats(dateSel);
+}
+function ouvrirFormateur(){
+  if($("#pin").value===CONFIG.PIN_FORMATEUR){ formateurOuvert=true; chargerDistant(); }
+  else $("#msgPin").innerHTML=`<div class="alerte">PIN incorrect.</div>`;
+}
+function toutesDonnees(){
+  const vu=new Set(), res=[];
+  [...donneesDistantes,...donneesImportees,...lire("epc_reponses",[])].forEach(r=>{
+    const k=r.code+"|"+r.horodatage; if(!vu.has(k)){ vu.add(k); res.push(r); }
+  });
+  return res;
+}
+async function chargerDistant(){
+  if(CONFIG.ENDPOINT){
+    try{
+      const att=lire("epc_attente",[]);
+      for(const e of att) await fetch(CONFIG.ENDPOINT,{method:"POST",body:JSON.stringify(e)});
+      ecrire("epc_attente",[]);
+      const rep=await fetch(CONFIG.ENDPOINT); donneesDistantes=await rep.json();
+    }catch(e){ alert("Impossible de joindre le serveur ; affichage des données locales."); }
+  }
+  rendreFormateur();
+}
+function importerJSON(fichiers){
+  let n=0, restants=fichiers.length;
+  [...fichiers].forEach(f=>{
+    const fr=new FileReader();
+    fr.onload=()=>{ try{ const d=JSON.parse(fr.result); (Array.isArray(d)?d:[d]).forEach(r=>{ if(r.code&&r.reponses){ donneesImportees.push(r); n++; } }); }catch(e){}
+      if(--restants===0){ alert(n+" réponse(s) importée(s)."); rendreFormateur(); } };
+    fr.readAsText(f);
+  });
+}
+function statsPour(date){
+  const rows=toutesDonnees().filter(r=>r.date===date);
+  const parAff=AFFIRMATIONS.map(a=>{
+    const s={n:a.n,texte:a.texte,vrai:0,faux:0,nuancer:0,conf:{1:0,2:0,3:0},sommeConf:0,total:0};
+    rows.forEach(r=>{ const x=r.reponses.find(q=>q.n===a.n); if(x){ s[x.pos]=(s[x.pos]||0)+1; s.conf[x.conf]=(s.conf[x.conf]||0)+1; s.sommeConf+=+x.conf; s.total++; } });
+    return s;
+  });
+  return {rows,parAff};
+}
+function rendreStats(date){
+  const {rows,parAff}=statsPour(date);
+  const pct=(x,t)=>t?Math.round(100*x/t):0;
+  let h=`<div class="kpi"><div><b>${rows.length}</b>participant${rows.length>1?"s":""} le ${date}</div>
+    <div><b>${rows.length?(parAff.reduce((s,a)=>s+a.sommeConf,0)/Math.max(1,parAff.reduce((s,a)=>s+a.total,0))).toFixed(2):"—"}</b>confiance moyenne (1 à 3)</div>
+    <div><b>${[...new Set(toutesDonnees().map(r=>r.date))].length}</b>date(s) de session enregistrée(s)</div></div>`;
+  if(!rows.length){ $("#stats").innerHTML=h+`<p class="info">Aucune réponse pour cette date.</p>`; return; }
+  h+=`<div class="legende"><span><i class="vrai"></i>Vrai</span><span><i class="faux"></i>Faux</span><span><i class="nuan"></i>À nuancer</span></div>
+  <table><thead><tr><th>#</th><th>Affirmation</th><th class="c">Vrai</th><th class="c">Faux</th><th class="c">À nuancer</th><th class="c">Répartition</th><th class="c">Confiance 1 / 2 / 3</th><th class="c">Conf. moy.</th></tr></thead><tbody>`;
+  parAff.forEach(s=>{
+    const t=s.total;
+    h+=`<tr><td class="c"><span class="num">${s.n}</span></td><td>${echap(s.texte)}</td>
+      <td class="c"><strong>${s.vrai}</strong><br><span class="info">${pct(s.vrai,t)} %</span></td>
+      <td class="c"><strong>${s.faux}</strong><br><span class="info">${pct(s.faux,t)} %</span></td>
+      <td class="c"><strong>${s.nuancer}</strong><br><span class="info">${pct(s.nuancer,t)} %</span></td>
+      <td style="min-width:140px"><div class="barre"><span class="vrai" style="width:${pct(s.vrai,t)}%"></span><span class="faux" style="width:${pct(s.faux,t)}%"></span><span class="nuan" style="width:${pct(s.nuancer,t)}%"></span></div></td>
+      <td class="c">${s.conf[1]} / ${s.conf[2]} / ${s.conf[3]}</td>
+      <td class="c">${t?(s.sommeConf/t).toFixed(2):"—"}</td></tr>`;
+  });
+  h+=`</tbody></table>
+  <h3>Croisement positionnement × confiance</h3><p class="info">Utile pour repérer les affirmations tenues pour « sûres » par beaucoup : ce sont celles où la rétroaction déplacera le plus.</p>
+  <table><thead><tr><th>#</th><th class="c">Vrai & sûr (3)</th><th class="c">Faux & sûr (3)</th><th class="c">À nuancer & sûr (3)</th><th class="c">« Je devine » (1), toutes réponses</th></tr></thead><tbody>`;
+  AFFIRMATIONS.forEach(a=>{
+    const c={vrai:0,faux:0,nuancer:0,dev:0};
+    rows.forEach(r=>{ const x=r.reponses.find(q=>q.n===a.n); if(!x) return; if(x.conf===3) c[x.pos]++; if(x.conf===1) c.dev++; });
+    h+=`<tr><td class="c"><span class="num">${a.n}</span></td><td class="c">${c.vrai}</td><td class="c">${c.faux}</td><td class="c">${c.nuancer}</td><td class="c">${c.dev}</td></tr>`;
+  });
+  h+=`</tbody></table><p class="noprint"><button class="secondaire" onclick="window.print()">Imprimer la synthèse</button></p>`;
+  $("#stats").innerHTML=h;
+}
+function exporterCSV(){
+  const date=$("#selDate")?.value; const rows=toutesDonnees().filter(r=>!date||r.date===date);
+  let csv="date;horodatage;code;"+AFFIRMATIONS.map(a=>`A${a.n}_position;A${a.n}_confiance`).join(";")+"\n";
+  rows.forEach(r=>{ csv+=`${r.date};${r.horodatage};${r.code};`+AFFIRMATIONS.map(a=>{ const x=r.reponses.find(q=>q.n===a.n)||{}; return `${libPos(x.pos)};${x.conf??""}`; }).join(";")+"\n"; });
+  telecharger(`positionnements_${date||"toutes"}.csv`,"\ufeff"+csv,"text/csv;charset=utf-8");
+}
+</script>
+
+
+</body></html>
